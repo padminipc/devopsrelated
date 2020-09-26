@@ -1,1 +1,7 @@
-echo "my name is padmini"
+version: "3.8"
+services:
+  web:
+    image: padminidocker123/jenkins_verbatim
+    ports:
+       - "8088:8080"
+
