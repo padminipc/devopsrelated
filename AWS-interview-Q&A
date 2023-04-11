@@ -281,3 +281,45 @@ transport layer-4
 presentation layer-5
 session layer-6
 application layer-7
+
+difference between jar war ear
+
+jar v/s war v/s ear
+
+jar file : java archive
+    a group of .classes file
+
+war file:web archive (web application)
+    suppose we want to develop one web application we have 10 jsp 10 servlets 100 html css javascript xml languages all this are combined in zipped form called war file , if we cpied that war file and simpy put it on webapps folder and restart the server web application is deployed 
+by this we can easily deliver or deploy applicatons
+
+ear file:enterprise application
+     war contains only web related techmology whereas in ear file all technology from java to j2ee are zipped
+	 
+web application v/s enterprise application
+	web application : only web related technology like servlets jsps html css javascript xml can be used
+	enterprise applicaton:more superior than web application any technology from java to jee is used alon with web technology like ejb eg:online bankinng application
+	
+web server v/s application server
+
+
+find . -name MET* ------->to find folder(search)
+
+
+
+how to read a content inside a file
+how to make content of a file as variable
+==========================================================
+How to setup master slave architecture job in jenkins
+-----------------------------------------------------
+We require 2 instances names as Jenkin-Master and Jenkin Slave
+  -->we dont require jenkin to be installed in slave but java is mandatory to install in all slaves 
+  -->we can create n no. of slaves
+  -->Depends upon project we need to install packages(eg:Maven,Ant)
+  -->first check master is in active (use command : sudo service jenkins status)
+  -->we need master slave because if n no. of job is triggered then if it is executed parallely then performance will be degraded to improve the performance we need master slave architecture
+  -->manage jenkin+manage nodes and clouds+new node
+  
+  (jenkins_url)/safeRestart
+
+
