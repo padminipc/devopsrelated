@@ -1,0 +1,174 @@
+ANSIBLE : it is a pushbased configuration management tool (Ansible is push based configuration management tool we no need to install agent on host server/target server, ansible will connect to host machine with agentless maner using ssh connections)
+
+ansible all -m ping ----->to list all the servers present int he host inventory
+ansible-doc -l      ------>to list the no. of modules
+ansible-doc -l| grep "copy" --->search your required module
+ansible-doc <copy> --->to know more about respected module
+ansible all -m command -a "git --version"  ---->to check whether git is install in servers  whereas -m module , -a arguement
+ansible all -b -m yum -a "name=git state=present"   --->installin git in redhat server bt using yum module whereas -b is become sudo privilage (rootuser) (privilage escalation)
+note:package is another module to install in any os
+ansible-playbook <playbookname>
+ansibke-playbook <playbookname> --syntax-check   --->syntax checking
+ansibke-playbook <playbookname>  --check  --->dryrun
+modules -->yum , apt ,service ,package ,copy
+
+what is the difference between copy module and template module	
+	copy and template module is used to copy from ansible server to host server but template module is ussed to define variable ..if variable is not mentioned in playbook it will throw error
+eg:welocome to {{name}}--->copy module
+variable
+  name:mithuntechnologies
+welcome to mithuntechnologies  --->template module
+
+what is the diffference between tasks and handler
+	tasks and handler functions same but handler works only when it is notified
+	
+perform below tasks using ansible command in ubuntu servers
+
+1.install HTTPD software in devcd server
+	ansible devcd -b -m apt -a "name=install httpd state=present"
+
+2.copy index.html file to devcd server
+	ansible devcd -b -m copy -s "src=index.html dest=/home/ubuntu/"
+
+3.start HTTPD service in devcd server 
+	ansible devcd -b -m service -a "name=httpd state=started"
+		where -b = sudo privelages
+			-a =  module 
+			
+			
+arguements
+			-m = module
+	
+playbook for the above tasks
+
+-hosts: devcd
+ become: true
+ tasks:
+ - name: install apache2
+   package
+     name: install apache2
+     state: present
+ - name: copy index.html
+   copy:
+     src: index.html
+	 dest: /var/www/html/index.html
+ - name: start httpd
+   service:
+     name: apache2
+     state: started   
+	 
+we can define variable in two way
+
+1>define the var inside the playbook whereas 2> other one run as run time environment
+eg: ansible-playbook <nameof playbook> --extras-vars "name=padmini name1=jp"
+or
+
+- hosts: devcd
+  become: true
+  vars:
+    name: padmini
+	name1: jp
+  tasks:
+  
+there are three types of variables
+
+group variable host variable and role variables
+
+all variables must be defined in the default path  vi /etc/ansible/host_variable/all.yml
+
+#ansible vault
+
+it is used to hide any confidential information 
+
+it is used to encrypt the files (files should not be in human readable format)
+passwords all confidential nobody should understand that so to maintain security we used ansible-vault 
+
+following syntaxes are
+ansible-vault create <filename>
+ansible-vault encrypt <filename>
+ansible-vault view <filename>  to see in HRF
+ansible-vault decrypt <filename>
+ansible-vault edit <filename>
+
+ansible all -m ping --ask-vault-pass --->it will prompt the password suppose server password stored as variable in /etc/ansible/host_var file and it is encrypted means
+
+
+Ansible Installation in Redhat Server
+
+Create ansible user in all machines (Ansible server & Host Servers(1,2,3,…N))
+
+1) Create the user ansible and set the password on all hosts:
+# sudo useradd ansible
+# sudo passwd ansible
+
+2) Make the necessary entry in sudoers file /etc/sudoers for ansible user for password-less sudo access:
+# visudo
+ansible ALL=(ALL) NOPASSWD: ALL
+Note:to chech how many users
+
+sudo adduser username
+sudo usermod -aG sudo username
+sudo deluser username
+sudo deluser --remove-home username
+su - ansible  #switching to other server
+
+3) Make the necessary changes in sshd_config file /etc/ssh/sshd_ config to enable password based authentication:
+ 
+Un comment PasswordAuthentication yes and comment
+PasswordAuthentication no.
+And save the file .
+ Then restart sshd service.
+# vi /etc/ssh/sshd_config
+# sudo service sshd restart
+
+
+Install Ansible in Red hat (Ansible Server)
+
+
+1) SSH to Redhat System & Switch to ansible user
+$ sudo su ansible
+2) Install python
+# sudo yum install python3 -y
+3) Update python alaternatives
+# sudo alternatives --set python /usr/bin/python3
+4) Verify Python Version
+# python --version
+5) Install PIP
+# sudo yum -y install python3-pip
+6) Install ansible using PIP
+# pip3 install ansible --user
+7) Verify Ansible version
+# ansible --version
+8) Create ansible folder under /etc
+# sudo mkdir -p /etc/ansible
+9) create ansible.cfg file under /etc/ansible .And paste complete content from below
+git link.
+ https://raw.githubusercontent.com/ansible/ansible/devel/examples/ansible.cfg
+# sudo vi /etc/ansible/ansible.cfg
+10)Create hosts file under /etc/ansible. Sample content can found in below git link.
+ https://raw.githubusercontent.com/ansible/ansible/devel/examples/hosts
+
+# sudo vi /etc/ansible/hosts
+
+
+
+ansible-playbook docker.yml --extra-vars "{tagname:4}"
+
+
+- name: building tomcat custom image
+      shell: docker build -t padminidocker123/vdevcd:{{tagname}} /home/ubuntu/vdevcd
+    - name: push docker image
+      shell: docker push padminidocker123/vdevcd:{{tagname}}
+- hosts: devcd
+  become: true
+  tasks:
+    - name: pull docker image
+      shell: docker pull padminidocker123/vdevcd:2
+    - name: Create a docker container
+      shell: docker run -d -p 8080:8080 --name vdevcd padminidocker123/vdevcd:{{tagname}}
+	  
+	  
+ansible-playbook release.yml --extra-vars tagname=4
+
+
+
