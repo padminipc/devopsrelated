@@ -1,0 +1,80 @@
+Insatlling java on ubuntu
+
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk
+
+
+how to install docker in ubuntu 18.04
+
+sudo apt-get update -y
+sudo apt-get remove docker docker-engine docker.io
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo systemctl enable docker
+docker --version
+sudo usermod -aG docker ubuntu  eg:username=ubuntu
+restart the server [exit]
+
+push the image
+
+docker login
+docker commit <containerid> padminidocker123/<imagename>
+docker push <new image>
+
+
+To remove all the images at once
+
+docker images -q                  #To list all the image id's
+docker rmi $(docker images -q)    #To remove all the images
+
+if error gets as disk space full
+
+docker volume rm $(docker volume ls -qf dangling=true)
+docker volume ls -qf dangling=true | xargs -r docker volume rm
+
+FROM padminidocker123/verbatim-tomcat
+COPY *.war /usr/local/tomcat/webapps/
+
+how to check jenkins version through command line 
+head -10 config.xml  <cat /var/jenkins_home/config.xml>
+
+
+
+docker exec -it --user root <container id> bash #command to login container as root user
+
+docker cp 198835c76377:/var/jenkins_home/workspace/Verbatim_development/target /home/ubuntu/container_jobs  #copy folder from container to host
+
+scp -r /home/ubuntu/container_jobs ubuntu@ip-172-31-35-9:/home/ubuntu/qa #transferring folder from one server to another server
+
+how to set passsword authentication
+
+sudo vi /etc/ssh/sshd_config
+set password authentication to yes
+sudo systemctl restart sshd
+passwd user
+
+
+if lost passwd
+
+sudo su -
+mount -o remount,rw /
+chmod 640 /etc/shadow
+sudo passwd ubuntu
+
+docker inspect     Return low-level information on Docker objects
+docker exec         Run a command in a running container
+docker image -q  to list the image id
+docker logs <container id>   to check logs
+docker start <container id> 
+docker stop <container id>  
+docker ps -a   list the containers
+docker container prune   to delete the exited container
+docker run  to create container
+docker exec  to login inside contianer
+docker exec -it --user root 95389b9369b9 bash login as root user inside container
+
+
+
+
+
+

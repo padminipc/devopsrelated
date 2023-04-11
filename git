@@ -1,0 +1,34 @@
+ what is the diff b/w centralized vcs(svn) and distribute vcs (git)
+    centralized vcs is located in one place so people can check out fom one location and make a changes and check in everything back in but this can be problem if we dont get access to the server suppose if network pblm whereas in git everybody has their local repository so here every developer has a copy or backup of required repo in their machine.
+	 git --version ========>2.17.1
+	 git config --global user.name "padmini"  global configuration variables (who is checkin in code and check out and make changes)
+	 git config --global user.email "padmiparamesh@gmail.com"
+	 git config --list =====list the config values
+	 git --help <verb> ====>any help eg:git --help config or git config --help
+	 git init ====>initializing git repository this .git directory contains all the information related to repository which we tracking in github 
+	 rm -rf .git ===>no need to trak repo 
+	 git status ==>before we commit we have to check git status so that we get information on which is tracked(green color) and untracked files(red colour
+	 git ignore ====>create a file called git ignore so edit the file name then check git status
+	 git reset ===>all the codes will be removed from staging area to working directory
+	 git add . ==>file from working area to staging area 
+	 git commit -m "first commit" ===>from staging area to local repo (commited the code locally or changes made to the code locally)
+	 git log ===>commit id and user who made commit changes with date and time  <how many commits happend and what all changes happen during commits we can check by using git log>
+	 git revert =======>it is like ctrl+z it will undo the changes git revert <commit id>
+	 git remote -v or git branch -a========>viewing information about remote repo
+	 git diff ===>changes made to the code before and after (difference)
+	 git remote add <aliasname> <remote repo url> ====>this is to login to remote repo by using credentials
+	 git push <name of the remote repo> <branch>  ===>commited code must be pushed to remote repo
+	 
+	 git branch ==>it will list the branch name
+	 git branch padmini -========>creating a new branch called padmini
+	 git checkout padmini ====>switched dto padmini branch
+	 git chekout -b padmini1 =====>creates a new branch as well head to new barnch >
+	 git merge =======>integrate changes from one branch o another
+	 git rebase ===>integrate changes from one branch to another and also rewriting the commit history in order to produce a straight, linear succession of commits.
+	 git stash save 'messgae' =====>it would be saved in temporary location
+	 git stash list ========>it will show stash id 
+	 git stash apply <stash id> ====>changes what you made earlier will apply
+	 git stash pop ====>applying changes and remove it from stash tag
+	 git stash drop <stash id> ====>it comes to untracked file
+	 git stash clear ===>clear the stassh id
+	 

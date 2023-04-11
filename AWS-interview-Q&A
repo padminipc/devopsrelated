@@ -1,0 +1,283 @@
+AWS INTERVIEW QUESTIONS
+
+
+1.EC2
+
+How to create EC2 Instance?
+	1.choose AMI
+	 2.choose instance type
+	  3.congigure instance
+	   4.add storage
+	    5.Tag instance
+		 6.configure security groups
+		  7.review
+What is AMI?
+	An Amazon Machine Image (AMI) is a template that contains a software configuration (for example, an operating system, an application server, and applications).
+
+How to choose right AMI for creating Instance?
+    By choosing wgich is low cost CPU as per the requirement of application , more instance type you choose more you pay
+	
+How to secure EC2?
+	We can secure EC2 by two methods
+	  1.network access control lists (NACLs) 
+	  2.security groups : assign one or more security groups to your instance, then add rules to each security group to allow specific types of traffic for your instance
+	  3.Use IAM roles
+	  
+How to take automated backups?
+	 we can automatically backup EC2 instances by 4 methods
+	 EBS snapshots
+		AWS Backup
+			AWS Data Lifecycle Manager
+				Amazon EBS snapshots using CloudWatch event and AMIs
+				
+How to migrate your instance from one Region to another and one account to another?
+	Login to AWS console of account from which you want to move the instance, navigate to "Instances" pane. Right click on the instance to be moved and choose "Create Image (EBS AMI)". Once done, you will receive a status message saying that request received and being processed to create image.
+    Now check the "AMI" pane. You will see an AMI being created, when the status turns from "Pending" to "Available". You need to edit its permissions to be able to use from another AWS account.
+	Enter the account id of the AWS account to which you want to expose this AMI. To find the account id; See "My Account / console > Security Credentials".
+	Now switch to the another account's AWS console. Navigate to "Instances" pane. Click the "Launch Instance" button, follow "Classic wizard", in the "Communiy AMIs" tab, search by entering the AMI id. 
+	
+	It's not possible to move an existing instance to another subnet, Availability Zone, or VPC. 
+	
+How can you recover keys of an EC2 Instance?
+	If you've lost the key pair, you can create an AMI of the existing instance, and then launch a new instance. You can then select a new key pair by following the instance launch wizard and To clean up, you can terminate the stopped instance for which the key pair is lost.
+ 
+If everything seems okay but still you are not able to login to EC2 how will you check it?
+	Troubleshooting
+	
+	1.My Amazon Elastic Compute Cloud (Amazon EC2) Linux instance is unreachable, and is failing one or both of its status checks
+	System status check:unreachable due to network, hardware, or software issues.
+	Instance status check:An instance status check failure indicates a problem with the instance due to operating system-level errors and also severe memory pressures caused by over-utilization of instance resources.
+	
+	2.Possible reasons for timeout when trying to access EC2 instance
+	  security groups : ssh 22 ,http 80 https 443
+
+How do you choose right type of EC2 instance?
+	For applications that benefit from a low cost per CPU you should try compute-optimized instances (C1 or CC2) first
+
+2.EBS[Elastic block storage]
+
+How many types of EBS volumes are there?
+	1.General Purpose SSD ( gp2 )[solid state drive][performance and price]
+	2.Provisioned IOPS SSD ( io1 )[database storing]
+	3.Provisioned IOPS SSD ( io2 )
+	4.Throughput Optimized HDD ( st1 )[hard disk drive][log processing]
+	5.Cold HDD ( sc1 )
+	6.Magnetic ( standard , a previous-generation type).
+
+How to take backup of a volume?
+	aws backup/data lifecycle manager
+
+Can I associate one EBS to more than 1 instance?
+	A volume can only be attached to one instance at a time as a best practiceb= but You can attach an available EBS volume to one or more of your instances that is in the same Availability Zone 
+but sharing hard drive for multiple instance is not a good pracice instead we can use s3
+
+What are the conditions if we need to mount EBS to instance?
+	You can attach an available EBS volume to one or more of your instances that is in the same Availability Zone 
+	The volume can only be attached to a stopped instance.The volume can only be attached to a stopped instance.
+	The configuration (instance type, operating system) of the instance must support that specific AWS Marketplace code. For example, you cannot take a volume from a Windows instance and attach it to a Linux instance.
+
+What is maximum size of EBS Volume?
+	16 TiB
+
+Where EBS snapshots are stored?
+	Amazon S3
+	EBS snapshots are stored in Amazon S3. However, you are not going to find your snapshots in any of your S3 buckets. AWS uses the S3 infrastructure to store your EBS snapshots, but you cannot access them while they reside in S3.
+
+3.S3
+
+What is S3?
+	S3 stands for Simple Storage Service. As the name implies it is a web service provided by Amazon Web Services which provides storage for the internet. This storage is highly-scalable and secure in the cloud that you can use to store and retrieve any amount of data, at any time, from anywhere on the web.
+
+How to host a website with S3?
+	Navigate to S3 in the AWS Console.
+	Click into your bucket.
+	Click the “Properties” section.
+	Click the “Static website hosting” option.
+	Select “Use this bucket to host a website”.
+	Enter “index.html” as the Index document and error.html as error document and click on save
+
+What is the use of multipart upload?
+
+How many S3 buckets can you create in your account?
+	100 buckets  [ If you need additional buckets, you can increase your account bucket quota to a maximum of 1,000 buckets by submitting a service quota increase.]
+
+What is default size of S3 Bucket?
+	Individual Amazon S3 objects can range in size from 1 byte to 5 terabytes.
+
+4.VPC
+
+What is VPC?
+	VPC is a network in the cloud which we can control where as AWS is a public cloud and anyone can create servers hence A virtual private cloud (VPC) is a private cloud hosted within a public cloud
+
+What is CIDR which VPC supports?
+	Classless Inter-Domain Routing is a method for allocating IP addresses and for IP routing
+For example, if you create a VPC with CIDR block 10.0. 0.0/24 , vpc supports 256 IP addresses. You can break this CIDR block into two subnets, each supporting 128 IP addresses. [2 `32-n]
+
+How does VPC peering work?[peering means connecting two paricular things{vpc}]
+	If servers are in two different vpc needs to access each other on private network then we need vpc peering
+
+What is DHCP and DNS options available in VPC?
+	Qualified Domain Name that uniquely and absolutely names a computer.
+
+What is VPC Flow Logs?
+	VPC Flow Logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces in your VPC
+
+Why do we use NACL with VPC?
+	NACL stands for Network Access Control Lists. It is a security layer for your VPC that controls the traffic in and out of one or more subnets
+
+
+5.IAM
+
+What is IAM?
+	Identity and Access Management (IAM) ,IAM to control who is authenticated (signed in) and authorized (has permissions) to use resources.
+
+What is more secure IAM user OR IAM role?
+	An IAM user has permanent long-term credentials and is used to directly interact with AWS services. An IAM role does not have any credentials and cannot make direct requests to AWS services.
+
+How to create custom IAM policy?
+	Sign in to the IAM console at https://console.aws.amazon.com/iam/ with your user that has administrator permissions. In the navigation pane, choose Policies. In the content pane, choose Create policy. Choose the JSON tab and copy the text from the following JSON policy document.
+
+How do you manage password policy for IAM Users?
+	In the navigation pane, choose Users. Choose the name of the user whose password you want to change. Choose the Security credentials tab, and then under Sign-in credentials, choose Manage password next to Console password.
+
+What will you do if you want to an IAM user to reset password at next login?
+	
+How do you rotate Access key of IAM users?
+	every 90 days
+Rotate your credentials every 3-4 months: Amazon recommends rotating account credentials at least once every 90 days.
+Sign in to the AWS Management Console as an IAM user. ...
+In the navigation bar on the upper right, choose your user name and then choose My Security Credentials.
+Choose AWS IAM credentials, Create access key. ...
+When prompted, choose Download .
+
+How do you enable MFA with IAM users?
+	multifactor authentication
+
+What are the supported Devices by AWS MFA?
+	iphone & tab
+
+How many rules can I associate with 1 IAM user by default?
+	5000 users per aws account
+	1000 IAM roles
+	10 policy
+
+6.AUTOSCALING
+
+What is autoscaling group?
+	Autoscaling ensure that you have a correct number of amazon ec2 instances available to handle the load for your application.
+An Auto Scaling group contains a collection of Amazon EC2 instances that are treated as a logical grouping for the purposes of automatic scaling and management.
+
+How does auto scaling work?
+	AWS Auto Scaling lets you build scaling plans that automate how groups of different resources respond to changes in demand. You can optimize availability, costs, or a balance of both. 
+
+What is end point for autoscaling health check?
+	 Amazon EC2 Auto Scaling checks that all instances within the Auto Scaling group are running and in good shape by periodically checking the health state of the instances. When it determines that an instance is unhealthy, it terminates that instance and launches a new one. This helps in maintaining the number of running instances at the minimum number (or desired number, if specified) that you defined.
+
+How does autoscaling manage traffic flow for ELB?
+	If the instance usage goes up to 80% CPU load, the auto scaling group in AWS spawns up a new instance and the load balancer attached to the group automatically diverts client traffic to it. When the load goes down, AWS automatically scales the instances down. In all, you virtually experience no downtime.
+
+If I want to launch multiple type of instance with in same target group what will I need to do?
+Can I use spot and on-demand instance with autoscaling group?
+Can I associate multiple targets group under one autoscaling group?
+Can I associate target groups created in different VPCs?
+
+7.ELB
+
+What is ELB in AWS?
+	Elastic Load Balancing automatically distributes incoming application traffic across multiple targets, such as Amazon EC2 instances, containers, IP addresses, and Lambda functions.
+
+What are different types of ELB in AWS?
+	Application Load Balancers, Network Load Balancers (new), and Classic Load Balancers
+	
+What is main difference between Application and Network ELB?
+	Application Load Balancers are used to route HTTP/HTTPS (or Layer 7) traffic
+whereas The network load balancer works at layers 3 & 4 (network and transport layers) and It can handle millions of requests per second.
+
+How do you select between Application and Network ELB to use for your application?
+
+How do you manage host and path based routing with App ELB?
+	In ALB we have listners with one or two rules that forward request to specific target group based on the URL path
+Host-based routing allows you to route a request based on host field in the HTTP header
+	
+What rule will you implement if you need to forward all traffic coming form a single application to any specific target group?
+
+Can I forward traffic based on source IP address?
+What is provisioned ELB?
+How many IP address do we get with ELB?
+What happens if ELB goes down?
+How many rules can I attach to one ELB?
+How many conditions can I attach per rule?
+
+8.CLOUDWATCH
+
+How to you monitor services with Cloud Watch?
+	Amazon CloudWatch is a monitoring and management service for aws resources and also applications that you run on aws 
+What is default metric of Cloud watch?
+Can I monitor applications running on EC2 instance?
+How can I set alarms with CloudWatch?
+Can I monitor resource by CloudWatch in multiple regions?
+
+9.CLOUDFORMATION
+What is cloud formation?
+How do you provision Infra with CloudFormation?
+Can we provision replica of existing environment with CloudFormation?
+What are the limitation of CloudFormation?
+
+10.CLOUDTRAIL
+What is use of CloudTrail?
+Where can I check activities performed by IAM users?
+How to track activities of IAM admins?
+How can I check that if an EC2 instance is created, who created it?
+Can I monitor activity of IAM user of single region or multiple regions?
+Where logs are stored for CloudTrail?
+
+11.CLOUDFRONT
+What are 2 main components of CloudFront?
+What is Origin in CloudFront?
+What is the use of distribution setting?
+What headers does cloud front cache by default?
+How to implement ssl certificate with CloudFront?
+How can I generate private url with help of CloudFront?
+How do I user WAF and Shield with CloudFront?
+What are the protocol does CloudFrom Support?
+What type of distribution does CloudFront Support?
+How can I clear cache of an object in CloudFront?
+Can I terminate HTTP to HTTPS using CloudFront?
+
+12.LAMBDA
+What is Lambda?
+How do you use lambda in your current project?
+How can you schedule a task using lambda?
+How will you write a lambda function to stop and start EC2 instance?
+Can we get notification with Lambda if an object is missed in S3 bucket?
+How can lambda help in cost optimisation?
+What are the use-cases where you have used lambda?
+
+
+15.RDS
+What is RDS?
+How many DB engine does AWS support?
+What are the conditions to enable/create read replica of MYsql DB?
+Can I create read replica of a read replica?
+How can I restore Data from Automated Created Snapshot?
+What type of rules can we have with RDS?
+How do you secure RDS?
+What are options group?
+16.ROUTE53
+What is Route53?
+How do you host your domain with Route53?
+What type of records are supported by Route53?
+How many type of zone can we host in Route53?
+Can I associate multiple VPCs with single hosted zone?
+Can I forward traffic to Internal ELB form Public hosted zone?
+Can I use CloudFront as an A record with Route53?
+
+osi model(open system interconnection)
+
+physical layer-1
+data link layer-2
+network layer-3
+transport layer-4
+presentation layer-5
+session layer-6
+application layer-7
